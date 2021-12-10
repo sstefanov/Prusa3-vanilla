@@ -4,14 +4,16 @@
 // Josef Průša <iam@josefprusa.cz> and contributors
 // http://www.reprap.org/wiki/Prusa_Mendel
 // http://prusamendel.org
-
+// S. Stefanov 2021
+// all configurations moved to file config.scad
+include <config.scad>
 use <polyholes.scad>
 
-bearing_diameter = 15;
 
 module horizontal_bearing_base(bearings=1){
  translate(v=[0,0,6]) cube(size = [24,8+bearings*25,12], center = true);	
 }
+
 module horizontal_bearing_holes(bearings=1){
  cutter_lenght = 10+bearings*25;
  one_holder_lenght = 8+25;
@@ -26,7 +28,6 @@ module horizontal_bearing_holes(bearings=1){
  }
  
  // Ziptie cutouts
- ziptie_cut_ofset = 0;
  for ( i = [0 : bearings-1] ){
   // For easier positioning I move them by half of one 
   // bearing holder then add each bearign lenght and then center again
@@ -46,29 +47,24 @@ module horizontal_bearing_test(){
   horizontal_bearing_base(1);
   horizontal_bearing_holes(1);
  }
- translate(v=[30,0,0]) difference(){
+ translate(v=[(bearing_height+2)/2,0,0]) difference(){
   horizontal_bearing_base(2);
   horizontal_bearing_holes(2);
  }
- translate(v=[60,0,0]) difference(){
+ translate(v=[bearing_height+2,0,0]) difference(){
   horizontal_bearing_base(3);
   horizontal_bearing_holes(3);
  }
 }
 
-
-
-thinwall = 3;
-bearing_size = bearing_diameter + 2 * thinwall;
-
 module vertical_bearing_base(){
- translate(v=[-2-bearing_size/4,0,29]) cube(size = [4+bearing_size/2,bearing_size,58], center = true);
- cylinder(h = 58, r=bearing_size/2, $fn = 90);
+ translate(v=[-1-bearing_size/4,0,bearing_height/2]) cube(size = [2+bearing_size/2,bearing_size,bearing_height], center = true);
+ cylinder(h = bearing_height, r=bearing_size/2, $fn = 90);
 }
 
 module vertical_bearing_holes(){
-  translate(v=[0,0,-1]) poly_cylinder(h = 62, r=bearing_diameter/2);
-  rotate(a=[0,0,-70]) translate(v=[bearing_diameter/2-1,-0.5,-1]) cube(size = [thinwall*2,1,62]);
+  translate(v=[0,0,-1]) poly_cylinder(h = bearing_height+4, r=bearing_diameter/2);
+  rotate(a=[0,0,-40]) translate(v=[bearing_diameter/2-1,-0.5,-1]) cube(size = [thinwall*2,1,bearing_height+4]);
 
 }
 
