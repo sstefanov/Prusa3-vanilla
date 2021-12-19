@@ -5,6 +5,10 @@
 // http://www.reprap.org/wiki/Prusa_Mendel
 // http://prusamendel.org
 
+// S. Stefanov 2021
+// all configurations moved to file config.scad
+include <configuration.scad>
+
 use <bearing.scad>
 
 module x_carriage_base(){
